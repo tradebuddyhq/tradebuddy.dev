@@ -34,7 +34,7 @@ jobs:
         run: npm ci
 
       - name: Build
-            run: npx vite build --base=/
+        run: npx vite build --base=/
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
