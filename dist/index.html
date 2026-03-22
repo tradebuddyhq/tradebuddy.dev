@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trade Buddy Developers</title>
+  <link rel="icon" href="/logo.png">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <script type="module" crossorigin src="/assets/index-BJfij4fd.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/index-WXS7nieI.css">
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <a href="#" class="nav-brand">
+      <img src="/logo.png" alt="Trade Buddy">
+      <span>Trade Buddy</span>
+      <span class="dev-badge">Developers</span>
+    </a>
+    <div class="nav-links">
+      <a href="#quickstart">Quick Start</a>
+      <a href="#api">API</a>
+      <a href="#sdk">SDK</a>
+      <a href="#stack">Stack</a>
+      <a href="#roadmap">Roadmap</a>
+      <a href="#contribute">Contribute</a>
+      <a href="#team">Team</a>
+      <a href="https://github.com/tradebuddyhq" target="_blank" class="btn-nav">GitHub</a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-eyebrow">
+    <span class="status-dot"></span>
+    Open Source School Marketplace
+  </div>
+  <h1>Build with <span class="gradient">Trade Buddy</span></h1>
+  <p>A fully typed TypeScript SDK, REST API, and open source codebase. Build integrations for the school marketplace.</p>
+
+  <div class="hero-install" id="hero-install">
+    <span class="dollar">$</span>
+    <span class="cmd">npm install <span class="pkg">@tradebuddy/sdk</span></span>
+    <span class="copy-hint">Click to copy</span>
+  </div>
+
+  <div class="hero-actions">
+    <a href="#quickstart" class="btn btn-primary">
+      <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+      Quick Start
+    </a>
+    <a href="#api" class="btn btn-secondary">
+      <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 17l6-6-6-6M12 19h8"/></svg>
+      API Reference
+    </a>
+    <a href="https://github.com/tradebuddyhq" target="_blank" class="btn btn-secondary">
+      <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+      GitHub
+    </a>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- QUICK START -->
+<section id="quickstart">
+  <div class="section-label">Quick Start</div>
+  <div class="section-title">Up and running in 60 seconds</div>
+  <div class="section-desc">Install the SDK, authenticate, and start fetching listings in just a few lines of TypeScript.</div>
+
+  <div class="quickstart-grid">
+    <div class="quickstart-steps">
+      <div class="qs-step active">
+        <div class="qs-step-num green">1</div>
+        <h3>Install the SDK</h3>
+        <p>Add the Trade Buddy SDK to your project with npm or yarn.</p>
+      </div>
+      <div class="qs-step">
+        <div class="qs-step-num blue">2</div>
+        <h3>Authenticate</h3>
+        <p>Sign in with email and password to get a session token.</p>
+      </div>
+      <div class="qs-step">
+        <div class="qs-step-num green">3</div>
+        <h3>Fetch listings</h3>
+        <p>Query the marketplace for products, donations, or wanted items.</p>
+      </div>
+      <div class="qs-step">
+        <div class="qs-step-num blue">4</div>
+        <h3>Create a listing</h3>
+        <p>Post a new item to the marketplace programmatically.</p>
+      </div>
+    </div>
+
+    <div class="quickstart-code">
+      <div class="code-header">
+        <span>index.ts</span>
+        <button class="copy-btn">Copy</button>
+      </div>
+      <div class="code-body">
+        <div class="qs-panel code-panel active">
+<pre><span class="cc">// Step 1: Install</span>
+<span class="cc">// Run in your terminal:</span>
+
+<span class="cs">npm install @tradebuddy/sdk</span>
+
+<span class="cc">// or with yarn:</span>
+<span class="cs">yarn add @tradebuddy/sdk</span>
+
+<span class="cc">// TypeScript types are included out of the box.</span>
+<span class="cc">// No @types package needed.</span></pre>
+        </div>
+        <div class="qs-panel code-panel">
+<pre><span class="ck">import</span> { <span class="cb">TradeBuddy</span> } <span class="ck">from</span> <span class="cs">'@tradebuddy/sdk'</span>;
+
+<span class="cc">// Create a client instance</span>
+<span class="ck">const</span> client = <span class="ck">new</span> <span class="cb">TradeBuddy</span>();
+
+<span class="cc">// Authenticate with email and password</span>
+<span class="ck">const</span> session = <span class="ck">await</span> client.<span class="cf">signIn</span>({
+  <span class="ck">email</span>: <span class="cs">'jane@school.edu'</span>,
+  <span class="ck">password</span>: <span class="cs">'your-password'</span>,
+});
+
+console.<span class="cf">log</span>(session.user.name); <span class="cc">// "Jane Doe"</span>
+console.<span class="cf">log</span>(session.token);     <span class="cc">// "eyJhbG..."</span></pre>
+        </div>
+        <div class="qs-panel code-panel">
+<pre><span class="cc">// Fetch all listings from the marketplace</span>
+<span class="ck">const</span> listings = <span class="ck">await</span> client.<span class="cf">getListings</span>();
+
+<span class="cc">// Each listing is fully typed</span>
+listings.<span class="cf">forEach</span>((item: <span class="cb">Listing</span>) =&gt; {
+  console.<span class="cf">log</span>(item.title);      <span class="cc">// "School Blazer"</span>
+  console.<span class="cf">log</span>(item.type);       <span class="cc">// "Sell" | "Donate" | "Wanted"</span>
+  console.<span class="cf">log</span>(item.price);      <span class="cc">// 25</span>
+  console.<span class="cf">log</span>(item.category);   <span class="cc">// "School Uniform"</span>
+});
+
+<span class="cc">// Filter by type</span>
+<span class="ck">const</span> donations = listings.<span class="cf">filter</span>(
+  l =&gt; l.type === <span class="cs">'Donate'</span>
+);</pre>
+        </div>
+        <div class="qs-panel code-panel">
+<pre><span class="cc">// Create a new listing</span>
+<span class="ck">const</span> newListing = <span class="ck">await</span> client.<span class="cf">createListing</span>({
+  <span class="ck">title</span>: <span class="cs">'Graphing Calculator'</span>,
+  <span class="ck">type</span>: <span class="cs">'Sell'</span>,
+  <span class="ck">price</span>: <span class="cn">35</span>,
+  <span class="ck">category</span>: <span class="cs">'Electronics'</span>,
+  <span class="ck">condition</span>: <span class="cs">'Like New'</span>,
+  <span class="ck">description</span>: <span class="cs">'TI-84 Plus, barely used'</span>,
+});
+
+console.<span class="cf">log</span>(newListing.id);  <span class="cc">// "sell_42"</span>
+
+<span class="cc">// Delete your account (careful!)</span>
+<span class="ck">await</span> client.<span class="cf">deleteAccount</span>();</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- API DOCS -->
+<section id="api">
+  <div class="section-label">API Reference</div>
+  <div class="section-title">REST API</div>
+  <div class="section-desc">
+    Authenticate users, manage listings, and interact with the marketplace.
+    <div style="margin-top: 12px;">
+      <span class="status-pill"><span class="status-dot"></span> API Operational</span>
+    </div>
+  </div>
+
+  <div class="api-grid">
+    <div class="api-sidebar">
+      <div class="api-sidebar-title">Authentication</div>
+      <div class="api-nav-item active"><span class="method-badge method-post">POST</span> Sign Up</div>
+      <div class="api-nav-item"><span class="method-badge method-post">POST</span> Sign In</div>
+      <div class="api-nav-item"><span class="method-badge method-post">POST</span> Sign Out</div>
+      <div class="api-nav-item"><span class="method-badge method-delete">DEL</span> Delete Account</div>
+      <div class="api-sidebar-title">Listings</div>
+      <div class="api-nav-item"><span class="method-badge method-get">GET</span> All Listings</div>
+      <div class="api-nav-item"><span class="method-badge method-post">POST</span> Create Listing</div>
+    </div>
+
+    <div class="api-content">
+      <!-- EP 0: Sign Up -->
+      <div class="api-endpoint active">
+        <div class="api-endpoint-title">Sign Up</div>
+        <div class="api-endpoint-desc">Create a new user account. Returns a Bearer token for authenticated requests.</div>
+        <div class="auth-badge auth-none">No auth required</div>
+        <div class="api-url"><span class="method-badge method-post">POST</span><span><span class="url-text">https://mytradebuddy.com</span><span class="url-path">/api/auth.php?action=signup</span></span></div>
+        <table class="params-table"><thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead><tbody>
+          <tr><td>name <span class="param-required">required</span></td><td><span class="param-type">string</span></td><td class="param-desc">Full name of the user</td></tr>
+          <tr><td>email <span class="param-required">required</span></td><td><span class="param-type">string</span></td><td class="param-desc">User's email address</td></tr>
+          <tr><td>password <span class="param-required">required</span></td><td><span class="param-type">string</span></td><td class="param-desc">Account password</td></tr>
+        </tbody></table>
+        <div class="code-block"><div class="code-header"><div class="code-tabs"><button class="code-tab active">TypeScript</button><button class="code-tab">cURL</button><button class="code-tab">Response</button></div><button class="copy-btn">Copy</button></div><div class="code-body">
+          <div class="code-panel active"><pre><span class="ck">import</span> { <span class="cb">TradeBuddy</span> } <span class="ck">from</span> <span class="cs">'@tradebuddy/sdk'</span>;
+
+<span class="ck">const</span> client = <span class="ck">new</span> <span class="cb">TradeBuddy</span>();
+
+<span class="ck">const</span> session = <span class="ck">await</span> client.<span class="cf">signUp</span>({
+  <span class="ck">name</span>: <span class="cs">'Jane Doe'</span>,
+  <span class="ck">email</span>: <span class="cs">'jane@school.edu'</span>,
+  <span class="ck">password</span>: <span class="cs">'secure-password'</span>,
+});
+
+console.<span class="cf">log</span>(session.user);  <span class="cc">// { id: 42, name: "Jane Doe", ... }</span>
+console.<span class="cf">log</span>(session.token); <span class="cc">// Bearer token</span></pre></div>
+          <div class="code-panel"><pre>curl -X POST https://mytradebuddy.com/api/auth.php?action=signup \
+  -H <span class="cs">"Content-Type: application/json"</span> \
+  -d <span class="cs">'{
+    "name": "Jane Doe",
+    "email": "jane@school.edu",
+    "password": "secure-password"
+  }'</span></pre></div>
+          <div class="code-panel"><pre>{
+  <span class="ck">"success"</span>: <span class="cb">true</span>,
+  <span class="ck">"user"</span>: {
+    <span class="ck">"id"</span>: <span class="cn">42</span>,
+    <span class="ck">"name"</span>: <span class="cs">"Jane Doe"</span>,
+    <span class="ck">"email"</span>: <span class="cs">"jane@school.edu"</span>
+  },
+  <span class="ck">"token"</span>: <span class="cs">"eyJhbGciOiJIUzI1NiJ9..."</span>
+}</pre></div>
+        </div></div>
+      </div>
+
+      <!-- EP 1: Sign In -->
+      <div class="api-endpoint">
+        <div class="api-endpoint-title">Sign In</div>
+        <div class="api-endpoint-desc">Authenticate an existing user and receive a Bearer token.</div>
+        <div class="auth-badge auth-none">No auth required</div>
+        <div class="api-url"><span class="method-badge method-post">POST</span><span><span class="url-text">https://mytradebuddy.com</span><span class="url-path">/api/auth.php?action=login</span></span></div>
+        <table class="params-table"><thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead><tbody>
+          <tr><td>email <span class="param-required">required</span></td><td><span class="param-type">string</span></td><td class="param-desc">Registered email address</td></tr>
+          <tr><td>password <span class="param-required">required</span></td><td><span class="param-type">string</span></td><td class="param-desc">Account password</td></tr>
+        </tbody></table>
+        <div class="code-block"><div class="code-header"><div class="code-tabs"><button class="code-tab active">TypeScript</button><button class="code-tab">cURL</button><button class="code-tab">Response</button></div><button class="copy-btn">Copy</button></div><div class="code-body">
+          <div class="code-panel active"><pre><span class="ck">const</span> session = <span class="ck">await</span> client.<span class="cf">signIn</span>({
+  <span class="ck">email</span>: <span class="cs">'jane@school.edu'</span>,
+  <span class="ck">password</span>: <span class="cs">'secure-password'</span>,
+});
+
+<span class="cc">// Session is now active</span>
+console.<span class="cf">log</span>(session.user.name); <span class="cc">// "Jane Doe"</span></pre></div>
+          <div class="code-panel"><pre>curl -X POST https://mytradebuddy.com/api/auth.php?action=login \
+  -H <span class="cs">"Content-Type: application/json"</span> \
+  -d <span class="cs">'{ "email": "jane@school.edu", "password": "secure-password" }'</span></pre></div>
+          <div class="code-panel"><pre>{
+  <span class="ck">"success"</span>: <span class="cb">true</span>,
+  <span class="ck">"user"</span>: { <span class="ck">"id"</span>: <span class="cn">42</span>, <span class="ck">"name"</span>: <span class="cs">"Jane Doe"</span>, <span class="ck">"email"</span>: <span class="cs">"jane@school.edu"</span> },
+  <span class="ck">"token"</span>: <span class="cs">"eyJhbGciOiJIUzI1NiJ9..."</span>
+}</pre></div>
+        </div></div>
+        <div class="try-it">
+          <div class="try-it-header"><h4><span class="live-dot"></span> Try it live</h4><span class="status-pill" style="font-size:11px;"><span class="status-dot"></span> Connected</span></div>
+          <div class="try-input-group"><label>Email</label><input class="try-input" type="email" id="try-email" placeholder="you@school.edu"></div>
+          <div class="try-input-group"><label>Password</label><input class="try-input" type="password" id="try-password" placeholder="your-password"></div>
+          <button class="try-btn" id="try-signin-btn">Send Request</button>
+          <div class="try-response" id="try-response"><div class="try-response-header"><span id="try-status"></span></div><div class="code-block"><div class="code-header"><span>Response</span></div><div class="code-body"><pre id="try-result"></pre></div></div></div>
+        </div>
+      </div>
+
+      <!-- EP 2: Sign Out -->
+      <div class="api-endpoint">
+        <div class="api-endpoint-title">Sign Out</div>
+        <div class="api-endpoint-desc">Invalidate the current session token.</div>
+        <div class="auth-badge auth-required">Bearer token required</div>
+        <div class="api-url"><span class="method-badge method-post">POST</span><span><span class="url-text">https://mytradebuddy.com</span><span class="url-path">/api/auth.php?action=logout</span></span></div>
+        <div class="code-block"><div class="code-header"><div class="code-tabs"><button class="code-tab active">TypeScript</button><button class="code-tab">cURL</button></div><button class="copy-btn">Copy</button></div><div class="code-body">
+          <div class="code-panel active"><pre><span class="ck">await</span> client.<span class="cf">signOut</span>();
+<span class="cc">// Token is now invalidated on the server</span></pre></div>
+          <div class="code-panel"><pre>curl -X POST https://mytradebuddy.com/api/auth.php?action=logout \
+  -H <span class="cs">"Authorization: Bearer YOUR_TOKEN"</span></pre></div>
+        </div></div>
+      </div>
+
+      <!-- EP 3: Delete Account -->
+      <div class="api-endpoint">
+        <div class="api-endpoint-title">Delete Account</div>
+        <div class="api-endpoint-desc">Permanently delete a user account and all associated listings. Cannot be undone.</div>
+        <div class="auth-badge auth-required">Bearer token required</div>
+        <div class="api-url"><span class="method-badge method-delete">DEL</span><span><span class="url-text">https://mytradebuddy.com</span><span class="url-path">/api/account.php?action=delete</span></span></div>
+        <div class="code-block"><div class="code-header"><div class="code-tabs"><button class="code-tab active">TypeScript</button><button class="code-tab">cURL</button><button class="code-tab">Response</button></div><button class="copy-btn">Copy</button></div><div class="code-body">
+          <div class="code-panel active"><pre><span class="cc">// Permanently deletes account + all listings</span>
+<span class="ck">await</span> client.<span class="cf">deleteAccount</span>();
+<span class="cc">// All user data removed from database</span></pre></div>
+          <div class="code-panel"><pre>curl -X POST https://mytradebuddy.com/api/account.php?action=delete \
+  -H <span class="cs">"Authorization: Bearer YOUR_TOKEN"</span></pre></div>
+          <div class="code-panel"><pre>{
+  <span class="ck">"success"</span>: <span class="cb">true</span>,
+  <span class="ck">"message"</span>: <span class="cs">"Account deleted successfully"</span>
+}</pre></div>
+        </div></div>
+      </div>
+
+      <!-- EP 4: Get Listings -->
+      <div class="api-endpoint">
+        <div class="api-endpoint-title">Get All Listings</div>
+        <div class="api-endpoint-desc">Retrieve all marketplace listings. Returns products, donations, and wanted items.</div>
+        <div class="auth-badge auth-none">No auth required</div>
+        <div class="api-url"><span class="method-badge method-get">GET</span><span><span class="url-text">https://mytradebuddy.com</span><span class="url-path">/api/listings.php</span></span></div>
+        <div class="code-block"><div class="code-header"><div class="code-tabs"><button class="code-tab active">TypeScript</button><button class="code-tab">cURL</button><button class="code-tab">Response</button></div><button class="copy-btn">Copy</button></div><div class="code-body">
+          <div class="code-panel active"><pre><span class="ck">const</span> listings = <span class="ck">await</span> client.<span class="cf">getListings</span>();
+
+listings.<span class="cf">forEach</span>((item: <span class="cb">Listing</span>) =&gt; {
+  console.<span class="cf">log</span>(<span class="cs">`${item.title} — $${item.price}`</span>);
+  console.<span class="cf">log</span>(<span class="cs">`${item.category} | ${item.condition}`</span>);
+  console.<span class="cf">log</span>(<span class="cs">`Seller: ${item.sellerName}`</span>);
+});</pre></div>
+          <div class="code-panel"><pre>curl https://mytradebuddy.com/api/listings.php</pre></div>
+          <div class="code-panel"><pre>{
+  <span class="ck">"success"</span>: <span class="cb">true</span>,
+  <span class="ck">"listings"</span>: [
+    {
+      <span class="ck">"id"</span>: <span class="cs">"sell_17"</span>,
+      <span class="ck">"type"</span>: <span class="cs">"Sell"</span>,
+      <span class="ck">"title"</span>: <span class="cs">"Sixth Form Uniform"</span>,
+      <span class="ck">"price"</span>: <span class="cn">40</span>,
+      <span class="ck">"category"</span>: <span class="cs">"School Uniform"</span>,
+      <span class="ck">"condition"</span>: <span class="cs">"Good"</span>,
+      <span class="ck">"sellerName"</span>: <span class="cs">"Arhan Harchandani"</span>,
+      <span class="ck">"createdAt"</span>: <span class="cn">1773280792000</span>
+    }
+  ]
+}</pre></div>
+        </div></div>
+        <div class="try-it">
+          <div class="try-it-header"><h4><span class="live-dot"></span> Try it live</h4></div>
+          <button class="try-btn" id="try-listings-btn">Fetch Listings</button>
+          <div class="try-response" id="try-listings-response"><div class="try-response-header"><span id="try-listings-status"></span></div><div class="code-block"><div class="code-header"><span>Response</span></div><div class="code-body"><pre id="try-listings-result" style="max-height:300px;overflow-y:auto;"></pre></div></div></div>
+        </div>
+      </div>
+
+      <!-- EP 5: Create Listing -->
+      <div class="api-endpoint">
+        <div class="api-endpoint-title">Create Listing</div>
+        <div class="api-endpoint-desc">Post a new item to the marketplace.</div>
+        <div class="auth-badge auth-required">Bearer token required</div>
+        <div class="api-url"><span class="method-badge method-post">POST</span><span><span class="url-text">https://mytradebuddy.com</span><span class="url-path">/api/listings.php</span></span></div>
+        <table class="params-table"><thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead><tbody>
+          <tr><td>title <span class="param-required">required</span></td><td><span class="param-type">string</span></td><td class="param-desc">Item title</td></tr>
+          <tr><td>type <span class="param-required">required</span></td><td><span class="param-type">"Sell" | "Donate" | "Wanted"</span></td><td class="param-desc">Listing type</td></tr>
+          <tr><td>price <span class="param-optional">optional</span></td><td><span class="param-type">number</span></td><td class="param-desc">Price (Sell only)</td></tr>
+          <tr><td>category <span class="param-required">required</span></td><td><span class="param-type">string</span></td><td class="param-desc">One of 12 categories</td></tr>
+          <tr><td>condition <span class="param-required">required</span></td><td><span class="param-type">string</span></td><td class="param-desc">New, Like New, Good, Fair</td></tr>
+          <tr><td>description <span class="param-optional">optional</span></td><td><span class="param-type">string</span></td><td class="param-desc">Additional details</td></tr>
+        </tbody></table>
+        <div class="code-block"><div class="code-header"><div class="code-tabs"><button class="code-tab active">TypeScript</button><button class="code-tab">cURL</button><button class="code-tab">Response</button></div><button class="copy-btn">Copy</button></div><div class="code-body">
+          <div class="code-panel active"><pre><span class="ck">const</span> listing = <span class="ck">await</span> client.<span class="cf">createListing</span>({
+  <span class="ck">title</span>: <span class="cs">'Graphing Calculator'</span>,
+  <span class="ck">type</span>: <span class="cs">'Sell'</span>,
+  <span class="ck">price</span>: <span class="cn">35</span>,
+  <span class="ck">category</span>: <span class="cs">'Electronics'</span>,
+  <span class="ck">condition</span>: <span class="cs">'Like New'</span>,
+  <span class="ck">description</span>: <span class="cs">'TI-84 Plus, barely used.'</span>,
+});
+
+console.<span class="cf">log</span>(listing.id); <span class="cc">// "sell_42"</span></pre></div>
+          <div class="code-panel"><pre>curl -X POST https://mytradebuddy.com/api/listings.php \
+  -H <span class="cs">"Authorization: Bearer YOUR_TOKEN"</span> \
+  -H <span class="cs">"Content-Type: application/json"</span> \
+  -d <span class="cs">'{
+    "title": "Graphing Calculator",
+    "type": "Sell",
+    "price": 35,
+    "category": "Electronics",
+    "condition": "Like New"
+  }'</span></pre></div>
+          <div class="code-panel"><pre>{
+  <span class="ck">"success"</span>: <span class="cb">true</span>,
+  <span class="ck">"id"</span>: <span class="cs">"sell_42"</span>
+}</pre></div>
+        </div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- SDK -->
+<section id="sdk">
+  <div class="section-label">TypeScript SDK</div>
+  <div class="section-title">@tradebuddy/sdk</div>
+  <div class="section-desc">A fully typed TypeScript client for the Trade Buddy API. Zero dependencies, tree-shakeable, works everywhere.</div>
+
+  <div class="code-block" style="max-width:700px;">
+    <div class="code-header"><span>types.ts</span><button class="copy-btn">Copy</button></div>
+    <div class="code-body"><div class="code-panel active"><pre><span class="ck">interface</span> <span class="cb">TradeBuddyConfig</span> {
+  <span class="ck">baseUrl</span>?: <span class="cb">string</span>;   <span class="cc">// default: "https://mytradebuddy.com/api"</span>
+  <span class="ck">token</span>?: <span class="cb">string</span>;     <span class="cc">// optional: resume a session</span>
+}
+
+<span class="ck">interface</span> <span class="cb">User</span> {
+  <span class="ck">id</span>: <span class="cb">number</span>;
+  <span class="ck">name</span>: <span class="cb">string</span>;
+  <span class="ck">email</span>: <span class="cb">string</span>;
+}
+
+<span class="ck">interface</span> <span class="cb">Session</span> {
+  <span class="ck">user</span>: <span class="cb">User</span>;
+  <span class="ck">token</span>: <span class="cb">string</span>;
+}
+
+<span class="ck">interface</span> <span class="cb">Listing</span> {
+  <span class="ck">id</span>: <span class="cb">string</span>;
+  <span class="ck">type</span>: <span class="cs">'Sell'</span> | <span class="cs">'Donate'</span> | <span class="cs">'Wanted'</span>;
+  <span class="ck">title</span>: <span class="cb">string</span>;
+  <span class="ck">price</span>: <span class="cb">number</span>;
+  <span class="ck">category</span>: <span class="cb">Category</span>;
+  <span class="ck">condition</span>: <span class="cb">Condition</span>;
+  <span class="ck">description</span>?: <span class="cb">string</span>;
+  <span class="ck">imageUri</span>?: <span class="cb">string</span>;
+  <span class="ck">sellerName</span>: <span class="cb">string</span>;
+  <span class="ck">sellerEmail</span>: <span class="cb">string</span>;
+  <span class="ck">createdAt</span>: <span class="cb">number</span>;
+}
+
+<span class="ck">type</span> <span class="cb">Category</span> =
+  | <span class="cs">'Books'</span> | <span class="cs">'Electronics'</span> | <span class="cs">'Clothing &amp; Accessories'</span>
+  | <span class="cs">'School Uniform'</span> | <span class="cs">'Sports Equipment'</span> | <span class="cs">'Toys'</span>
+  | <span class="cs">'Video Games'</span> | <span class="cs">'Board Games'</span> | <span class="cs">'Furniture'</span>
+  | <span class="cs">'Kitchen Items'</span> | <span class="cs">'Household Items'</span>
+  | <span class="cs">'Jewelry &amp; Watches'</span>;
+
+<span class="ck">type</span> <span class="cb">Condition</span> = <span class="cs">'New'</span> | <span class="cs">'Like New'</span> | <span class="cs">'Good'</span> | <span class="cs">'Fair'</span>;</pre></div></div>
+  </div>
+
+  <div class="sdk-features">
+    <div class="sdk-feature"><div class="sdk-feature-icon" style="background:rgba(30,185,105,0.12);color:var(--green);"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg></div><div><h4>Fully Typed</h4><p>TypeScript types for every request and response</p></div></div>
+    <div class="sdk-feature"><div class="sdk-feature-icon" style="background:rgba(25,140,215,0.12);color:var(--blue);"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div><div><h4>Zero Dependencies</h4><p>Uses native fetch — Node, Deno, Bun, browsers</p></div></div>
+    <div class="sdk-feature"><div class="sdk-feature-icon" style="background:rgba(30,185,105,0.12);color:var(--green);"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></div><div><h4>Token Management</h4><p>Handles Bearer tokens automatically after sign in</p></div></div>
+    <div class="sdk-feature"><div class="sdk-feature-icon" style="background:rgba(25,140,215,0.12);color:var(--blue);"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/></svg></div><div><h4>Tree-Shakeable</h4><p>Import only what you need — minimal bundle</p></div></div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ROADMAP -->
+<section id="roadmap">
+  <div class="section-label">Roadmap</div>
+  <div class="section-title">What we're building</div>
+  <div class="section-desc">Everything planned for the Trade Buddy developer platform.</div>
+
+  <div class="roadmap-grid">
+    <div class="roadmap-card">
+      <div class="roadmap-status live">Live</div>
+      <div class="roadmap-icon green"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/></svg></div>
+      <h3>TypeScript SDK</h3>
+      <p>Fully typed client for the Trade Buddy API. Install with npm, get autocomplete and type safety out of the box.</p>
+    </div>
+    <div class="roadmap-card">
+      <div class="roadmap-status building">Building</div>
+      <div class="roadmap-icon blue"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></div>
+      <h3>Webhooks</h3>
+      <p>Subscribe to real-time events — new listings, sales, account changes. Get HTTP POST notifications to your endpoint.</p>
+    </div>
+    <div class="roadmap-card">
+      <div class="roadmap-status planned">Planned</div>
+      <div class="roadmap-icon green"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></div>
+      <h3>Developer API Keys</h3>
+      <p>Dedicated API keys for third-party apps. Rate limiting, usage analytics, and scoped permissions per key.</p>
+    </div>
+    <div class="roadmap-card">
+      <div class="roadmap-status planned">Planned</div>
+      <div class="roadmap-icon blue"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></div>
+      <h3>Embeddable Widget</h3>
+      <p>Drop a &lt;script&gt; tag on any school website to display Trade Buddy listings. Customizable themes and filters.</p>
+    </div>
+    <div class="roadmap-card">
+      <div class="roadmap-status planned">Planned</div>
+      <div class="roadmap-icon green"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 17l6-6-6-6M12 19h8"/></svg></div>
+      <h3>CLI Tool</h3>
+      <p>Interact with Trade Buddy from your terminal. Browse listings, post items, manage your account with <code>npx tradebuddy</code>.</p>
+    </div>
+    <div class="roadmap-card">
+      <div class="roadmap-status planned">Planned</div>
+      <div class="roadmap-icon blue"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></div>
+      <h3>Status Page</h3>
+      <p>Real-time API uptime monitoring at status.tradebuddy.dev. Incident history and response time metrics.</p>
+    </div>
+    <div class="roadmap-card">
+      <div class="roadmap-status planned">Planned</div>
+      <div class="roadmap-icon green"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></div>
+      <h3>Changelog</h3>
+      <p>Track every API change with versioned release notes. Never be surprised by breaking changes.</p>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- TECH STACK -->
+<section id="stack">
+  <div class="section-label">Architecture</div>
+  <div class="section-title">What powers Trade Buddy</div>
+  <div class="section-desc">A full-stack architecture connecting parents across web and mobile with a shared database.</div>
+
+  <div class="stack-grid">
+    <div class="stack-card"><div class="stack-card-icon blue"><svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></div><h3>Website</h3><p>Server-rendered PHP with MySQL. 12 category pages, admin panel, messaging, donations, wanted items.</p><div class="tech-tags"><span class="tech-tag">PHP</span><span class="tech-tag">MySQL</span><span class="tech-tag">HTML/CSS</span><span class="tech-tag">JavaScript</span></div></div>
+    <div class="stack-card"><div class="stack-card-icon green"><svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M12 18h.01"/></svg></div><h3>Mobile App</h3><p>Cross-platform React Native app built with Expo. Shares the same database and user accounts as the website.</p><div class="tech-tags"><span class="tech-tag">React Native</span><span class="tech-tag">Expo</span><span class="tech-tag">JavaScript</span></div></div>
+    <div class="stack-card"><div class="stack-card-icon blue"><svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 14a1 1 0 01-.78-1.63l9.9-10.2a.5.5 0 01.86.46l-1.92 6.02A1 1 0 0013 10h7a1 1 0 01.78 1.63l-9.9 10.2a.5.5 0 01-.86-.46l1.92-6.02A1 1 0 0011 14H4z"/></svg></div><h3>REST API</h3><p>PHP endpoints with Bearer token auth. Powers the mobile app and the TypeScript SDK.</p><div class="tech-tags"><span class="tech-tag">REST</span><span class="tech-tag">JSON</span><span class="tech-tag">Bearer Auth</span></div></div>
+    <div class="stack-card"><div class="stack-card-icon green"><svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg></div><h3>Database</h3><p>Shared MySQL database. Single source of truth for users, listings, messages, and sessions.</p><div class="tech-tags"><span class="tech-tag">MySQL</span><span class="tech-tag">Shared State</span></div></div>
+  </div>
+
+  <div class="repos-grid">
+    <a href="https://github.com/tradebuddyhq/site" target="_blank" class="repo-card"><div class="repo-header"><svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg><span class="repo-name">tradebuddyhq/site</span></div><div class="repo-desc">Website, admin panel, and REST API.</div><div class="repo-meta"><span class="repo-lang"><span class="lang-dot" style="background:#4F5D95;"></span> PHP</span><span>Private</span></div></a>
+    <a href="https://github.com/tradebuddyhq/app" target="_blank" class="repo-card"><div class="repo-header"><svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg><span class="repo-name">tradebuddyhq/app</span></div><div class="repo-desc">React Native mobile app. iOS and Android.</div><div class="repo-meta"><span class="repo-lang"><span class="lang-dot" style="background:#f1e05a;"></span> JavaScript</span><span>Public</span></div></a>
+    <a href="https://github.com/tradebuddyhq/sdk" target="_blank" class="repo-card"><div class="repo-header"><svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg><span class="repo-name">tradebuddyhq/sdk</span></div><div class="repo-desc">Official TypeScript SDK. npm: @tradebuddy/sdk</div><div class="repo-meta"><span class="repo-lang"><span class="lang-dot" style="background:#3178c6;"></span> TypeScript</span><span>Public</span></div></a>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- CONTRIBUTE -->
+<section id="contribute">
+  <div class="section-label">Open Source</div>
+  <div class="section-title">Contribute to Trade Buddy</div>
+  <div class="section-desc">Whether you're a student learning to code or an experienced developer, there's a place for you.</div>
+
+  <div class="contribute-grid">
+    <div class="contribute-card"><div class="step step-green">1</div><h3>Fork the repo</h3><p>Clone the app or SDK repository and set up your local dev environment.</p><code>git clone https://github.com/tradebuddyhq/app.git</code></div>
+    <div class="contribute-card"><div class="step step-blue">2</div><h3>Pick an issue</h3><p>Check out open issues. Look for <strong>good first issue</strong> labels to get started.</p><code>gh issue list --repo tradebuddyhq/app</code></div>
+    <div class="contribute-card"><div class="step step-green">3</div><h3>Submit a PR</h3><p>Make your changes, test locally, and open a pull request. We review within 48 hours.</p><code>git checkout -b feature/your-feature</code></div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- TEAM -->
+<section id="team">
+  <div class="section-label">Team</div>
+  <div class="section-title">Built by</div>
+  <div class="section-desc">The people behind Trade Buddy.</div>
+
+  <div class="team-grid">
+    <div class="team-card">
+      <div class="team-avatar">A</div>
+      <h3>Arhan Harchandani</h3>
+      <div class="role">Founder & Developer</div>
+      <div class="team-links">
+        <a href="https://github.com/ArhanCodes" target="_blank"><svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg></a>
+        <a href="https://www.linkedin.com/company/trade-buddy/" target="_blank"><svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- OTHER PROJECTS -->
+<hr class="divider">
+<section id="projects">
+  <div class="section-label">Other Projects</div>
+  <div class="section-title">From Trade Buddy</div>
+  <div class="section-desc">Other open source tools by the Trade Buddy team.</div>
+
+  <div class="repos-grid">
+    <a href="https://ebay-wrapper.js.org" target="_blank" class="repo-card">
+      <div class="repo-header">
+        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/></svg>
+        <span class="repo-name">ebay-wrapper.js.org</span>
+      </div>
+      <div class="repo-desc">eBay API wrapper for JavaScript and TypeScript. Simplifies eBay Browse, Finding, and Trading APIs.</div>
+      <div class="repo-meta"><span class="repo-lang"><span class="lang-dot" style="background:#f1e05a;"></span> JavaScript</span><span>Open Source</span></div>
+    </a>
+  </div>
+</section>
+
+<!-- CTA -->
+<div class="cta-section">
+  <div class="cta-box">
+    <h2>Start building today</h2>
+    <p>Install the SDK, explore the API, and help make school essentials accessible for every family.</p>
+    <div class="cta-actions">
+      <a href="https://github.com/tradebuddyhq" target="_blank" class="btn btn-primary"><svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg> Explore on GitHub</a>
+      <a href="https://mytradebuddy.com" target="_blank" class="btn btn-blue">Visit Trade Buddy</a>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <p>&copy; 2026 Trade Buddy. All rights reserved.</p>
+    <div class="footer-links">
+      <a href="https://mytradebuddy.com">Website</a>
+      <a href="https://github.com/tradebuddyhq">GitHub</a>
+      <a href="https://www.linkedin.com/company/trade-buddy/">LinkedIn</a>
+      <a href="https://ebay-wrapper.js.org">eBay Wrapper</a>
+      <a href="mailto:contact@mytradebuddy.com">Contact</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
