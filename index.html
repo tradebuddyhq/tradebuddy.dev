@@ -23,9 +23,11 @@
       <a href="#quickstart">Quick Start</a>
       <a href="#api">API</a>
       <a href="#sdk">SDK</a>
+      <a href="#webhooks">Webhooks</a>
+      <a href="#apikeys">API Keys</a>
+      <a href="#widget">Widget</a>
       <a href="#stack">Stack</a>
       <a href="#roadmap">Roadmap</a>
-      <a href="#contribute">Contribute</a>
       <a href="https://github.com/tradebuddyhq" target="_blank" class="btn-nav">GitHub</a>
     </div>
   </div>
@@ -446,6 +448,381 @@ console.<span class="cf">log</span>(listing.id); <span class="cc">// "sell_42"</
 
 <hr class="divider">
 
+<!-- WEBHOOKS -->
+<section id="webhooks">
+  <div class="section-label">Real-Time Events</div>
+  <div class="section-title">Webhooks</div>
+  <div class="section-desc">Subscribe to events and get HTTP POST notifications in real time. Never poll the API again.</div>
+
+  <div class="webhooks-grid">
+    <div class="webhook-events">
+      <h3 style="font-size:16px;font-weight:700;margin-bottom:16px;">Available Events</h3>
+      <div class="webhook-event-list">
+        <div class="webhook-event active" data-event="listing.created">
+          <span class="event-dot green"></span>
+          <span class="event-name">listing.created</span>
+          <span class="event-desc">A new listing is posted</span>
+        </div>
+        <div class="webhook-event" data-event="listing.sold">
+          <span class="event-dot blue"></span>
+          <span class="event-name">listing.sold</span>
+          <span class="event-desc">A listing is marked as sold</span>
+        </div>
+        <div class="webhook-event" data-event="listing.deleted">
+          <span class="event-dot red"></span>
+          <span class="event-name">listing.deleted</span>
+          <span class="event-desc">A listing is removed</span>
+        </div>
+        <div class="webhook-event" data-event="user.created">
+          <span class="event-dot green"></span>
+          <span class="event-name">user.created</span>
+          <span class="event-desc">A new user signs up</span>
+        </div>
+        <div class="webhook-event" data-event="user.deleted">
+          <span class="event-dot red"></span>
+          <span class="event-name">user.deleted</span>
+          <span class="event-desc">A user deletes their account</span>
+        </div>
+      </div>
+    </div>
+    <div class="webhook-payload">
+      <div class="code-block">
+        <div class="code-header">
+          <div class="code-tabs">
+            <button class="code-tab active" data-wh-tab="payload">Payload</button>
+            <button class="code-tab" data-wh-tab="subscribe">Subscribe</button>
+            <button class="code-tab" data-wh-tab="verify">Verify</button>
+          </div>
+          <button class="copy-btn">Copy</button>
+        </div>
+        <div class="code-body">
+          <div class="code-panel active" data-wh-panel="payload"><pre><span class="cc">// POST to your endpoint</span>
+{
+  <span class="cs">"event"</span>: <span class="cs">"listing.created"</span>,
+  <span class="cs">"timestamp"</span>: <span class="cn">1711843200000</span>,
+  <span class="cs">"data"</span>: {
+    <span class="cs">"id"</span>: <span class="cs">"sell_42"</span>,
+    <span class="cs">"type"</span>: <span class="cs">"Sell"</span>,
+    <span class="cs">"title"</span>: <span class="cs">"Graphing Calculator"</span>,
+    <span class="cs">"price"</span>: <span class="cn">35</span>,
+    <span class="cs">"category"</span>: <span class="cs">"Electronics"</span>,
+    <span class="cs">"condition"</span>: <span class="cs">"Like New"</span>,
+    <span class="cs">"sellerName"</span>: <span class="cs">"Jane Doe"</span>,
+    <span class="cs">"sellerEmail"</span>: <span class="cs">"jane@school.edu"</span>
+  }
+}</pre></div>
+          <div class="code-panel" data-wh-panel="subscribe"><pre><span class="ck">import</span> { TradeBuddy } <span class="ck">from</span> <span class="cs">'@tradebuddy/sdk'</span>;
+
+<span class="ck">const</span> client = <span class="ck">new</span> <span class="cb">TradeBuddy</span>();
+<span class="ck">await</span> client.signIn({ email, password });
+
+<span class="cc">// Register a webhook endpoint</span>
+<span class="ck">const</span> webhook = <span class="ck">await</span> client.<span class="cb">createWebhook</span>({
+  <span class="ck">url</span>: <span class="cs">'https://yourapp.com/webhooks/tradebuddy'</span>,
+  <span class="ck">events</span>: [
+    <span class="cs">'listing.created'</span>,
+    <span class="cs">'listing.sold'</span>,
+    <span class="cs">'user.created'</span>,
+  ],
+  <span class="ck">secret</span>: <span class="cs">'whsec_your_secret_here'</span>,
+});
+
+<span class="cb">console</span>.log(webhook.id);  <span class="cc">// "wh_abc123"</span></pre></div>
+          <div class="code-panel" data-wh-panel="verify"><pre><span class="ck">import</span> crypto <span class="ck">from</span> <span class="cs">'crypto'</span>;
+
+<span class="cc">// Verify webhook signature in your handler</span>
+<span class="ck">function</span> <span class="cb">verifyWebhook</span>(body: <span class="cb">string</span>, signature: <span class="cb">string</span>, secret: <span class="cb">string</span>): <span class="cb">boolean</span> {
+  <span class="ck">const</span> expected = crypto
+    .createHmac(<span class="cs">'sha256'</span>, secret)
+    .update(body)
+    .digest(<span class="cs">'hex'</span>);
+  <span class="ck">return</span> crypto.timingSafeEqual(
+    Buffer.from(signature),
+    Buffer.from(expected),
+  );
+}
+
+<span class="cc">// Express handler example</span>
+app.post(<span class="cs">'/webhooks/tradebuddy'</span>, (req, res) => {
+  <span class="ck">const</span> sig = req.headers[<span class="cs">'x-tradebuddy-signature'</span>];
+  <span class="ck">if</span> (!verifyWebhook(req.body, sig, <span class="cs">'whsec_...'</span>)) {
+    <span class="ck">return</span> res.status(<span class="cn">401</span>).send(<span class="cs">'Invalid signature'</span>);
+  }
+  <span class="ck">const</span> event = JSON.parse(req.body);
+  console.log(event.event); <span class="cc">// "listing.created"</span>
+  res.status(<span class="cn">200</span>).send(<span class="cs">'ok'</span>);
+});</pre></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="webhook-features">
+    <div class="sdk-feature"><div class="sdk-feature-icon" style="background:rgba(30,185,105,0.12);color:var(--green);"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></div><div><h4>HMAC Signatures</h4><p>Every payload is signed with SHA-256 for verification</p></div></div>
+    <div class="sdk-feature"><div class="sdk-feature-icon" style="background:rgba(25,140,215,0.12);color:var(--blue);"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg></div><div><h4>Selective Events</h4><p>Subscribe only to the events you care about</p></div></div>
+    <div class="sdk-feature"><div class="sdk-feature-icon" style="background:rgba(30,185,105,0.12);color:var(--green);"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/></svg></div><div><h4>Auto-Retry</h4><p>Failed deliveries are retried with exponential backoff</p></div></div>
+    <div class="sdk-feature"><div class="sdk-feature-icon" style="background:rgba(25,140,215,0.12);color:var(--blue);"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div><h4>Delivery Logs</h4><p>View request/response history for every delivery attempt</p></div></div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- DEVELOPER API KEYS -->
+<section id="apikeys">
+  <div class="section-label">Authentication</div>
+  <div class="section-title">Developer API Keys</div>
+  <div class="section-desc">Dedicated API keys for third-party apps with scoped permissions, rate limiting, and usage analytics.</div>
+
+  <div class="apikeys-grid">
+    <div class="apikeys-info">
+      <div class="apikey-card">
+        <div class="apikey-header">
+          <div class="apikey-icon green"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 11-7.778 7.778 5.5 5.5 0 017.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg></div>
+          <div>
+            <h4>Production Key</h4>
+            <p class="apikey-scope">Full access — listings, users, webhooks</p>
+          </div>
+        </div>
+        <div class="apikey-value">
+          <code>tb_live_sk_7f3a...</code>
+          <span class="auth-badge auth-required" style="margin:0;">Secret</span>
+        </div>
+      </div>
+      <div class="apikey-card">
+        <div class="apikey-header">
+          <div class="apikey-icon blue"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 11-7.778 7.778 5.5 5.5 0 017.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg></div>
+          <div>
+            <h4>Test Key</h4>
+            <p class="apikey-scope">Sandbox — no real data affected</p>
+          </div>
+        </div>
+        <div class="apikey-value">
+          <code>tb_test_sk_9c2b...</code>
+          <span class="auth-badge auth-none" style="margin:0;">Test</span>
+        </div>
+      </div>
+      <div class="apikey-card">
+        <div class="apikey-header">
+          <div class="apikey-icon green"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></div>
+          <div>
+            <h4>Public Key</h4>
+            <p class="apikey-scope">Read-only — listings and categories</p>
+          </div>
+        </div>
+        <div class="apikey-value">
+          <code>tb_live_pk_4d1e...</code>
+          <span class="auth-badge auth-none" style="margin:0;">Public</span>
+        </div>
+      </div>
+
+      <div class="apikey-limits">
+        <h4 style="font-size:14px;font-weight:700;margin-bottom:12px;">Rate Limits</h4>
+        <div class="limit-row"><span>Production</span><span class="limit-value">1,000 req/min</span></div>
+        <div class="limit-row"><span>Test</span><span class="limit-value">100 req/min</span></div>
+        <div class="limit-row"><span>Public</span><span class="limit-value">60 req/min</span></div>
+      </div>
+    </div>
+
+    <div class="apikeys-code">
+      <div class="code-block">
+        <div class="code-header">
+          <div class="code-tabs">
+            <button class="code-tab active" data-ak-tab="sdk">SDK</button>
+            <button class="code-tab" data-ak-tab="curl">cURL</button>
+            <button class="code-tab" data-ak-tab="manage">Manage Keys</button>
+          </div>
+          <button class="copy-btn">Copy</button>
+        </div>
+        <div class="code-body">
+          <div class="code-panel active" data-ak-panel="sdk"><pre><span class="ck">import</span> { TradeBuddy } <span class="ck">from</span> <span class="cs">'@tradebuddy/sdk'</span>;
+
+<span class="cc">// Authenticate with an API key instead of email/password</span>
+<span class="ck">const</span> client = <span class="ck">new</span> <span class="cb">TradeBuddy</span>({
+  <span class="ck">apiKey</span>: <span class="cs">'tb_live_sk_7f3a...'</span>,
+});
+
+<span class="cc">// All methods work the same way</span>
+<span class="ck">const</span> listings = <span class="ck">await</span> client.<span class="cb">getListings</span>();
+
+<span class="cc">// Public keys are read-only</span>
+<span class="ck">const</span> publicClient = <span class="ck">new</span> <span class="cb">TradeBuddy</span>({
+  <span class="ck">apiKey</span>: <span class="cs">'tb_live_pk_4d1e...'</span>,
+});
+<span class="ck">const</span> items = <span class="ck">await</span> publicClient.<span class="cb">getListings</span>(); <span class="cc">// ✓ works</span>
+<span class="cc">// publicClient.createListing(...)  // ✗ 403 Forbidden</span></pre></div>
+          <div class="code-panel" data-ak-panel="curl"><pre><span class="cc"># Use API key in the Authorization header</span>
+curl https://mytradebuddy.com/api/listings.php \
+  -H <span class="cs">"Authorization: Bearer tb_live_sk_7f3a..."</span>
+
+<span class="cc"># Check your rate limit status</span>
+<span class="cc"># Response headers include:</span>
+<span class="cc">#   X-RateLimit-Limit: 1000</span>
+<span class="cc">#   X-RateLimit-Remaining: 994</span>
+<span class="cc">#   X-RateLimit-Reset: 1711843260</span>
+
+<span class="cc"># Create a listing with a production key</span>
+curl -X POST https://mytradebuddy.com/api/listings.php \
+  -H <span class="cs">"Authorization: Bearer tb_live_sk_7f3a..."</span> \
+  -H <span class="cs">"Content-Type: application/json"</span> \
+  -d <span class="cs">'{
+    "title": "School Blazer",
+    "type": "Sell",
+    "price": 25,
+    "category": "School Uniform",
+    "condition": "Good"
+  }'</span></pre></div>
+          <div class="code-panel" data-ak-panel="manage"><pre><span class="cc">// Create a new API key</span>
+<span class="ck">const</span> key = <span class="ck">await</span> client.<span class="cb">createApiKey</span>({
+  <span class="ck">name</span>: <span class="cs">'My Integration'</span>,
+  <span class="ck">type</span>: <span class="cs">'secret'</span>,       <span class="cc">// 'secret' | 'public'</span>
+  <span class="ck">scopes</span>: [<span class="cs">'listings:read'</span>, <span class="cs">'listings:write'</span>],
+});
+console.log(key.key); <span class="cc">// "tb_live_sk_..." — shown once!</span>
+
+<span class="cc">// List all your API keys</span>
+<span class="ck">const</span> keys = <span class="ck">await</span> client.<span class="cb">listApiKeys</span>();
+keys.forEach(k => {
+  console.log(k.name);       <span class="cc">// "My Integration"</span>
+  console.log(k.lastUsed);   <span class="cc">// "2026-03-28T14:30:00Z"</span>
+  console.log(k.requests);   <span class="cc">// 4832</span>
+});
+
+<span class="cc">// Revoke a key</span>
+<span class="ck">await</span> client.<span class="cb">revokeApiKey</span>(<span class="cs">'key_abc123'</span>);</pre></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="apikey-scopes-section">
+    <h3 style="font-size:16px;font-weight:700;margin-bottom:16px;">Available Scopes</h3>
+    <div class="scopes-grid">
+      <div class="scope-item"><code>listings:read</code><span>View all marketplace listings</span></div>
+      <div class="scope-item"><code>listings:write</code><span>Create, update, and delete listings</span></div>
+      <div class="scope-item"><code>users:read</code><span>View user profiles</span></div>
+      <div class="scope-item"><code>users:write</code><span>Manage user accounts</span></div>
+      <div class="scope-item"><code>webhooks:manage</code><span>Create and delete webhook subscriptions</span></div>
+      <div class="scope-item"><code>analytics:read</code><span>View usage statistics and metrics</span></div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- EMBEDDABLE WIDGET -->
+<section id="widget">
+  <div class="section-label">Embed</div>
+  <div class="section-title">Embeddable Widget</div>
+  <div class="section-desc">Drop a single script tag on any website to display Trade Buddy listings. Customizable themes and filters.</div>
+
+  <div class="widget-grid">
+    <div class="widget-config">
+      <h3 style="font-size:16px;font-weight:700;margin-bottom:16px;">Configure</h3>
+      <div class="widget-option">
+        <label>Theme</label>
+        <div class="widget-toggle" id="widget-theme-toggle">
+          <button class="widget-toggle-btn active" data-theme="dark">Dark</button>
+          <button class="widget-toggle-btn" data-theme="light">Light</button>
+        </div>
+      </div>
+      <div class="widget-option">
+        <label>Category Filter</label>
+        <select class="widget-select" id="widget-category">
+          <option value="">All Categories</option>
+          <option value="Books">Books</option>
+          <option value="Electronics">Electronics</option>
+          <option value="School Uniform">School Uniform</option>
+          <option value="Sports Equipment">Sports Equipment</option>
+          <option value="Clothing & Accessories">Clothing & Accessories</option>
+        </select>
+      </div>
+      <div class="widget-option">
+        <label>Listing Type</label>
+        <select class="widget-select" id="widget-type">
+          <option value="">All Types</option>
+          <option value="Sell">For Sale</option>
+          <option value="Donate">Donations</option>
+          <option value="Wanted">Wanted</option>
+        </select>
+      </div>
+      <div class="widget-option">
+        <label>Max Items</label>
+        <select class="widget-select" id="widget-limit">
+          <option value="3">3</option>
+          <option value="5" selected>5</option>
+          <option value="10">10</option>
+        </select>
+      </div>
+
+      <div class="widget-embed-code">
+        <label>Embed Code</label>
+        <div class="code-block" style="margin-top:8px;">
+          <div class="code-header"><span>HTML</span><button class="copy-btn" id="widget-copy-btn">Copy</button></div>
+          <div class="code-body"><pre id="widget-embed-output">&lt;<span class="ck">script</span>
+  <span class="cb">src</span>=<span class="cs">"https://tradebuddy.dev/widget.js"</span>
+  <span class="cb">data-theme</span>=<span class="cs">"dark"</span>
+  <span class="cb">data-limit</span>=<span class="cs">"5"</span>
+&gt;&lt;/<span class="ck">script</span>&gt;</pre></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="widget-preview-container">
+      <h3 style="font-size:16px;font-weight:700;margin-bottom:16px;">Live Preview</h3>
+      <div class="widget-preview" id="widget-preview">
+        <div class="widget-preview-inner" id="widget-preview-inner">
+          <div class="wp-header">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+            <span>Trade Buddy</span>
+          </div>
+          <div class="wp-items" id="wp-items">
+            <div class="wp-item">
+              <div class="wp-item-info">
+                <span class="wp-item-title">Graphing Calculator</span>
+                <span class="wp-item-meta">Electronics &middot; Like New</span>
+              </div>
+              <span class="wp-item-price">$35</span>
+            </div>
+            <div class="wp-item">
+              <div class="wp-item-info">
+                <span class="wp-item-title">School Blazer</span>
+                <span class="wp-item-meta">School Uniform &middot; Good</span>
+              </div>
+              <span class="wp-item-price">$25</span>
+            </div>
+            <div class="wp-item">
+              <div class="wp-item-info">
+                <span class="wp-item-title">Biology Textbook</span>
+                <span class="wp-item-meta">Books &middot; Fair</span>
+              </div>
+              <span class="wp-item-price">$12</span>
+            </div>
+            <div class="wp-item">
+              <div class="wp-item-info">
+                <span class="wp-item-title">Tennis Racket</span>
+                <span class="wp-item-meta">Sports Equipment &middot; Good</span>
+              </div>
+              <span class="wp-item-price">$18</span>
+            </div>
+            <div class="wp-item">
+              <div class="wp-item-info">
+                <span class="wp-item-title">Winter Jacket</span>
+                <span class="wp-item-meta">Clothing &middot; Like New</span>
+              </div>
+              <span class="wp-item-price">Free</span>
+            </div>
+          </div>
+          <div class="wp-footer">
+            <a href="https://mytradebuddy.com" target="_blank">View all on Trade Buddy &rarr;</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
 <!-- ROADMAP -->
 <section id="roadmap">
   <div class="section-label">Roadmap</div>
@@ -460,19 +837,19 @@ console.<span class="cf">log</span>(listing.id); <span class="cc">// "sell_42"</
       <p>Fully typed client for the Trade Buddy API. Install with npm, get autocomplete and type safety out of the box.</p>
     </div>
     <div class="roadmap-card">
-      <div class="roadmap-status building">Building</div>
+      <div class="roadmap-status live">Live</div>
       <div class="roadmap-icon blue"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></div>
       <h3>Webhooks</h3>
       <p>Subscribe to real-time events — new listings, sales, account changes. Get HTTP POST notifications to your endpoint.</p>
     </div>
     <div class="roadmap-card">
-      <div class="roadmap-status planned">Planned</div>
+      <div class="roadmap-status live">Live</div>
       <div class="roadmap-icon green"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></div>
       <h3>Developer API Keys</h3>
       <p>Dedicated API keys for third-party apps. Rate limiting, usage analytics, and scoped permissions per key.</p>
     </div>
     <div class="roadmap-card">
-      <div class="roadmap-status planned">Planned</div>
+      <div class="roadmap-status live">Live</div>
       <div class="roadmap-icon blue"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></div>
       <h3>Embeddable Widget</h3>
       <p>Drop a &lt;script&gt; tag on any school website to display Trade Buddy listings. Customizable themes and filters.</p>
@@ -515,9 +892,9 @@ console.<span class="cf">log</span>(listing.id); <span class="cc">// "sell_42"</
   </div>
 
   <div class="repos-grid">
-    <a href="https://github.com/tradebuddyhq/site" target="_blank" class="repo-card"><div class="repo-header"><svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg><span class="repo-name">tradebuddyhq/site</span></div><div class="repo-desc">mytradebuddy.com</div><div class="repo-meta"><span class="repo-lang"><span class="lang-dot" style="background:#4F5D95;"></span> PHP</span><span>Private</span></div></a>
-    <a href="https://github.com/tradebuddyhq/app" target="_blank" class="repo-card"><div class="repo-header"><svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg><span class="repo-name">tradebuddyhq/app</span></div><div class="repo-desc">React Native mobile app for iOS</div><div class="repo-meta"><span class="repo-lang"><span class="lang-dot" style="background:#f1e05a;"></span> JavaScript</span><span>Public</span></div></a>
-    <a href="https://github.com/tradebuddyhq/sdk" target="_blank" class="repo-card"><div class="repo-header"><svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg><span class="repo-name">tradebuddyhq/sdk</span></div><div class="repo-desc">TypeScript SDK. npm: @tradebuddy/sdk</div><div class="repo-meta"><span class="repo-lang"><span class="lang-dot" style="background:#3178c6;"></span> TypeScript</span><span>Public</span></div></a>
+    <a href="https://github.com/tradebuddyhq/site" target="_blank" class="repo-card"><div class="repo-header"><svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg><span class="repo-name">tradebuddyhq/site</span></div><div class="repo-desc">Website, admin panel, and REST API.</div><div class="repo-meta"><span class="repo-lang"><span class="lang-dot" style="background:#4F5D95;"></span> PHP</span><span>Private</span></div></a>
+    <a href="https://github.com/tradebuddyhq/app" target="_blank" class="repo-card"><div class="repo-header"><svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg><span class="repo-name">tradebuddyhq/app</span></div><div class="repo-desc">React Native mobile app. iOS and Android.</div><div class="repo-meta"><span class="repo-lang"><span class="lang-dot" style="background:#f1e05a;"></span> JavaScript</span><span>Public</span></div></a>
+    <a href="https://github.com/tradebuddyhq/sdk" target="_blank" class="repo-card"><div class="repo-header"><svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg><span class="repo-name">tradebuddyhq/sdk</span></div><div class="repo-desc">Official TypeScript SDK. npm: @tradebuddy/sdk</div><div class="repo-meta"><span class="repo-lang"><span class="lang-dot" style="background:#3178c6;"></span> TypeScript</span><span>Public</span></div></a>
     <a href="https://github.com/tradebuddyhq/Otter" target="_blank" class="repo-card"><div class="repo-header"><svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg><span class="repo-name">tradebuddyhq/Otter</span></div><div class="repo-desc">Multi-purpose Discord bot for the Trade Buddy server</div><div class="repo-meta"><span class="repo-lang"><span class="lang-dot" style="background:#3178c6;"></span> TypeScript</span><span>Public</span></div></a>
   </div>
 </section>
@@ -531,7 +908,7 @@ console.<span class="cf">log</span>(listing.id); <span class="cc">// "sell_42"</
   <div class="section-desc">Whether you're a student learning to code or an experienced developer, there's a place for you.</div>
 
   <div class="contribute-grid">
-    <div class="contribute-card"><div class="step step-green">1</div><h3>Fork the repo</h3><p>Clone the app or SDK repository and set up your local dev environment.</p><code>git clone https://github.com/tradebuddyhq/app.git  </code></div>
+    <div class="contribute-card"><div class="step step-green">1</div><h3>Fork the repo</h3><p>Clone the app or SDK repository and set up your local dev environment.</p><code>git clone https://github.com/tradebuddyhq/app.git</code></div>
     <div class="contribute-card"><div class="step step-blue">2</div><h3>Pick an issue</h3><p>Check out open issues. Look for <strong>good first issue</strong> labels to get started.</p><code>gh issue list --repo tradebuddyhq/app</code></div>
     <div class="contribute-card"><div class="step step-green">3</div><h3>Submit a PR</h3><p>Make your changes, test locally, and open a pull request. We review within 48 hours.</p><code>git checkout -b feature/your-feature</code></div>
   </div>
@@ -539,12 +916,11 @@ console.<span class="cf">log</span>(listing.id); <span class="cc">// "sell_42"</
 
 <hr class="divider">
 
-<!-- TEAM
+<!-- TEAM -->
 <section id="team">
   <div class="section-label">Team</div>
   <div class="section-title">Built by</div>
   <div class="section-desc">The people behind Trade Buddy.</div>
-
 
   <div class="team-grid">
     <div class="team-card">
@@ -559,8 +935,6 @@ console.<span class="cf">log</span>(listing.id); <span class="cc">// "sell_42"</
   </div>
 </section>
 
-  -->
-
 <!-- OTHER PROJECTS -->
 <hr class="divider">
 <section id="projects">
@@ -574,8 +948,8 @@ console.<span class="cf">log</span>(listing.id); <span class="cc">// "sell_42"</
         <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/></svg>
         <span class="repo-name">ebay-wrapper.js.org</span>
       </div>
-      <div class="repo-desc">eBay API wrapper</div>
-      <div class="repo-meta"><span class="repo-lang"><span class="lang-dot" style="background:#3178c6;"></span> TypeScript</span><span>Open Source</span></div>
+      <div class="repo-desc">eBay API wrapper for JavaScript and TypeScript. Simplifies eBay Browse, Finding, and Trading APIs.</div>
+      <div class="repo-meta"><span class="repo-lang"><span class="lang-dot" style="background:#f1e05a;"></span> JavaScript</span><span>Open Source</span></div>
     </a>
   </div>
 </section>

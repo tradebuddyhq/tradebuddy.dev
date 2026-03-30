@@ -167,6 +167,170 @@ export function initTryListings(): void {
   });
 }
 
+// ─── Webhook event switching ───
+export function initWebhookEvents(): void {
+  const events = document.querySelectorAll<HTMLElement>('.webhook-event');
+  const payloadPanel = document.querySelector<HTMLElement>('[data-wh-panel="payload"]');
+  if (!events.length || !payloadPanel) return;
+
+  const payloads: Record<string, string> = {
+    'listing.created': `// POST to your endpoint
+{
+  "event": "listing.created",
+  "timestamp": 1711843200000,
+  "data": {
+    "id": "sell_42",
+    "type": "Sell",
+    "title": "Graphing Calculator",
+    "price": 35,
+    "category": "Electronics",
+    "condition": "Like New",
+    "sellerName": "Jane Doe",
+    "sellerEmail": "jane@school.edu"
+  }
+}`,
+    'listing.sold': `// POST to your endpoint
+{
+  "event": "listing.sold",
+  "timestamp": 1711843500000,
+  "data": {
+    "id": "sell_42",
+    "type": "Sell",
+    "title": "Graphing Calculator",
+    "price": 35,
+    "buyerName": "Alex Smith",
+    "buyerEmail": "alex@school.edu",
+    "sellerName": "Jane Doe"
+  }
+}`,
+    'listing.deleted': `// POST to your endpoint
+{
+  "event": "listing.deleted",
+  "timestamp": 1711844000000,
+  "data": {
+    "id": "sell_42",
+    "reason": "sold",
+    "deletedBy": "seller"
+  }
+}`,
+    'user.created': `// POST to your endpoint
+{
+  "event": "user.created",
+  "timestamp": 1711844500000,
+  "data": {
+    "id": 42,
+    "name": "Jane Doe",
+    "email": "jane@school.edu",
+    "createdAt": 1711844500000
+  }
+}`,
+    'user.deleted': `// POST to your endpoint
+{
+  "event": "user.deleted",
+  "timestamp": 1711845000000,
+  "data": {
+    "id": 42,
+    "email": "jane@school.edu",
+    "listingsRemoved": 3
+  }
+}`,
+  };
+
+  events.forEach(ev => {
+    ev.addEventListener('click', () => {
+      events.forEach(e => e.classList.remove('active'));
+      ev.classList.add('active');
+      const eventName = ev.getAttribute('data-event') || '';
+      const pre = payloadPanel.querySelector('pre');
+      if (pre && payloads[eventName]) {
+        pre.textContent = payloads[eventName];
+      }
+    });
+  });
+}
+
+// ─── Webhook tabs ───
+export function initWebhookTabs(): void {
+  const tabs = document.querySelectorAll<HTMLButtonElement>('[data-wh-tab]');
+  const panels = document.querySelectorAll<HTMLElement>('[data-wh-panel]');
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      tabs.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      const target = tab.getAttribute('data-wh-tab');
+      panels.forEach(p => p.classList.toggle('active', p.getAttribute('data-wh-panel') === target));
+    });
+  });
+}
+
+// ─── API Key tabs ───
+export function initApiKeyTabs(): void {
+  const tabs = document.querySelectorAll<HTMLButtonElement>('[data-ak-tab]');
+  const panels = document.querySelectorAll<HTMLElement>('[data-ak-panel]');
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      tabs.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      const target = tab.getAttribute('data-ak-tab');
+      panels.forEach(p => p.classList.toggle('active', p.getAttribute('data-ak-panel') === target));
+    });
+  });
+}
+
+// ─── Widget configurator ───
+export function initWidgetConfigurator(): void {
+  const themeToggles = document.querySelectorAll<HTMLButtonElement>('.widget-toggle-btn');
+  const preview = document.getElementById('widget-preview-inner');
+  const categorySelect = document.getElementById('widget-category') as HTMLSelectElement | null;
+  const typeSelect = document.getElementById('widget-type') as HTMLSelectElement | null;
+  const limitSelect = document.getElementById('widget-limit') as HTMLSelectElement | null;
+  const embedOutput = document.getElementById('widget-embed-output');
+  const copyBtn = document.getElementById('widget-copy-btn') as HTMLButtonElement | null;
+
+  let theme = 'dark';
+  let category = '';
+  let type = '';
+  let limit = '5';
+
+  function updateEmbed() {
+    if (!embedOutput) return;
+    let attrs = `  <span class="cb">src</span>=<span class="cs">"https://tradebuddy.dev/widget.js"</span>\n  <span class="cb">data-theme</span>=<span class="cs">"${theme}"</span>`;
+    if (category) attrs += `\n  <span class="cb">data-category</span>=<span class="cs">"${category}"</span>`;
+    if (type) attrs += `\n  <span class="cb">data-type</span>=<span class="cs">"${type}"</span>`;
+    attrs += `\n  <span class="cb">data-limit</span>=<span class="cs">"${limit}"</span>`;
+    embedOutput.innerHTML = `<pre>&lt;<span class="ck">script</span>\n${attrs}\n&gt;&lt;/<span class="ck">script</span>&gt;</pre>`;
+  }
+
+  themeToggles.forEach(btn => {
+    btn.addEventListener('click', () => {
+      themeToggles.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      theme = btn.getAttribute('data-theme') || 'dark';
+      if (preview) {
+        preview.classList.toggle('light', theme === 'light');
+      }
+      updateEmbed();
+    });
+  });
+
+  categorySelect?.addEventListener('change', () => { category = categorySelect.value; updateEmbed(); });
+  typeSelect?.addEventListener('change', () => { type = typeSelect.value; updateEmbed(); });
+  limitSelect?.addEventListener('change', () => { limit = limitSelect.value; updateEmbed(); });
+
+  if (copyBtn) {
+    copyBtn.addEventListener('click', () => {
+      let plain = `<script\n  src="https://tradebuddy.dev/widget.js"\n  data-theme="${theme}"`;
+      if (category) plain += `\n  data-category="${category}"`;
+      if (type) plain += `\n  data-type="${type}"`;
+      plain += `\n  data-limit="${limit}"\n></script>`;
+      navigator.clipboard.writeText(plain);
+      copyBtn.textContent = 'Copied!';
+      copyBtn.classList.add('copied');
+      setTimeout(() => { copyBtn.textContent = 'Copy'; copyBtn.classList.remove('copied'); }, 2000);
+    });
+  }
+}
+
 // ─── Smooth scroll ───
 export function initSmoothScroll(): void {
   document.querySelectorAll<HTMLAnchorElement>('a[href^="#"]').forEach(a => {

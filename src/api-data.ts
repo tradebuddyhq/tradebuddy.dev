@@ -350,13 +350,6 @@ export const stackItems: StackItem[] = [
     tags: ['MySQL', 'Shared State'],
     color: 'green',
   },
-  {
-    icon: 'chat',
-    title: 'Discord Bot (Otter)',
-    description: 'Multi-purpose TypeScript Discord bot for the Trade Buddy community server. Moderation, notifications, and more.',
-    tags: ['TypeScript', 'Discord.js', 'Node.js'],
-    color: 'blue',
-  },
 ];
 
 export const repos: RepoItem[] = [
