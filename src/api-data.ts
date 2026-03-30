@@ -350,6 +350,13 @@ export const stackItems: StackItem[] = [
     tags: ['MySQL', 'Shared State'],
     color: 'green',
   },
+  {
+    icon: 'chat',
+    title: 'Discord Bot (Otter)',
+    description: 'Multi-purpose TypeScript Discord bot for the Trade Buddy community server. Moderation, notifications, and more.',
+    tags: ['TypeScript', 'Discord.js', 'Node.js'],
+    color: 'blue',
+  },
 ];
 
 export const repos: RepoItem[] = [
@@ -376,6 +383,14 @@ export const repos: RepoItem[] = [
     langColor: '#3178c6',
     visibility: 'Public',
     url: 'https://github.com/tradebuddyhq/sdk',
+  },
+  {
+    name: 'tradebuddyhq/Otter',
+    description: 'Multi-purpose Discord bot for the Trade Buddy server.',
+    language: 'TypeScript',
+    langColor: '#3178c6',
+    visibility: 'Public',
+    url: 'https://github.com/tradebuddyhq/Otter',
   },
 ];
 
