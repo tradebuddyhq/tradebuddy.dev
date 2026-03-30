@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard — Trade Buddy Developers</title>
+  <link rel="icon" href="/logo.png">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --green: #1EB969; --green-dark: #179e56;
+      --blue: #198CD7; --blue-dark: #1577b8;
+      --dark: #0d1117; --dark-card: #161b22; --dark-border: #30363d;
+      --dark-surface: #1c2128; --text: #e6edf3; --text-muted: #8b949e;
+      --text-subtle: #6e7681; --radius: 12px; --radius-sm: 8px;
+      --red: #f85149; --purple: #d2a8ff; --orange: #ffa657;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'DM Sans', sans-serif; background: var(--dark); color: var(--text); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+
+    nav { background: rgba(13,17,23,0.8); backdrop-filter: blur(20px); border-bottom: 1px solid var(--dark-border); padding: 0 24px; }
+    .nav-inner { max-width: 900px; margin: 0 auto; height: 64px; display: flex; align-items: center; justify-content: space-between; }
+    .nav-brand { display: flex; align-items: center; gap: 12px; text-decoration: none; color: var(--text); }
+    .nav-brand img { width: 32px; height: 32px; }
+    .nav-brand span { font-weight: 700; font-size: 18px; }
+    .dev-badge { font-size: 11px; font-weight: 600; color: var(--green); background: rgba(30,185,105,0.12); border: 1px solid rgba(30,185,105,0.25); padding: 2px 8px; border-radius: 20px; text-transform: uppercase; letter-spacing: 0.5px; }
+    .nav-link { color: var(--text-muted); text-decoration: none; font-size: 14px; font-weight: 500; }
+    .nav-link:hover { color: var(--text); }
+
+    .container { max-width: 900px; margin: 0 auto; padding: 40px 24px; }
+    h1 { font-size: 28px; font-weight: 700; margin-bottom: 8px; }
+    .subtitle { color: var(--text-muted); font-size: 16px; margin-bottom: 32px; }
+
+    /* Auth */
+    #auth-section { max-width: 420px; margin: 80px auto; }
+    .auth-card { background: var(--dark-card); border: 1px solid var(--dark-border); border-radius: var(--radius); padding: 32px; }
+    .auth-card h2 { font-size: 22px; font-weight: 700; margin-bottom: 4px; }
+    .auth-card p { color: var(--text-muted); font-size: 14px; margin-bottom: 24px; }
+    .form-group { margin-bottom: 16px; }
+    .form-group label { display: block; font-size: 12px; font-weight: 600; color: var(--text-subtle); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
+    .form-input { width: 100%; padding: 10px 14px; background: var(--dark-surface); border: 1px solid var(--dark-border); border-radius: 6px; color: var(--text); font-size: 14px; font-family: inherit; outline: none; transition: border-color 0.2s; }
+    .form-input:focus { border-color: var(--green); }
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 12px 24px; border-radius: var(--radius-sm); font-size: 14px; font-weight: 600; border: none; cursor: pointer; font-family: inherit; transition: all 0.2s; }
+    .btn-primary { background: var(--green); color: #fff; width: 100%; }
+    .btn-primary:hover { background: var(--green-dark); }
+    .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+    .btn-sm { padding: 8px 16px; font-size: 13px; }
+    .btn-danger { background: rgba(248,81,73,0.1); color: var(--red); border: 1px solid rgba(248,81,73,0.2); }
+    .btn-danger:hover { background: rgba(248,81,73,0.2); }
+    .btn-secondary { background: rgba(255,255,255,0.06); color: var(--text); border: 1px solid var(--dark-border); }
+    .btn-secondary:hover { background: rgba(255,255,255,0.1); }
+    .auth-error { color: var(--red); font-size: 13px; margin-top: 12px; display: none; }
+
+    /* Dashboard */
+    #dashboard-section { display: none; }
+    .dash-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; flex-wrap: wrap; gap: 16px; }
+    .user-info { display: flex; align-items: center; gap: 12px; }
+    .user-avatar { width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, var(--green), var(--blue)); display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 700; color: #fff; }
+    .user-name { font-weight: 700; font-size: 16px; }
+    .user-email { font-size: 13px; color: var(--text-muted); }
+
+    .section-title { font-size: 18px; font-weight: 700; margin-bottom: 16px; display: flex; align-items: center; justify-content: space-between; }
+
+    /* Keys */
+    .key-card { background: var(--dark-card); border: 1px solid var(--dark-border); border-radius: var(--radius-sm); padding: 20px; margin-bottom: 12px; }
+    .key-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+    .key-name { font-weight: 700; font-size: 15px; }
+    .key-meta { display: flex; align-items: center; gap: 12px; }
+    .key-badge { font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 4px; text-transform: uppercase; }
+    .key-badge.secret { background: rgba(248,81,73,0.1); color: var(--red); }
+    .key-badge.public { background: rgba(30,185,105,0.1); color: var(--green); }
+    .key-value { display: flex; align-items: center; gap: 8px; background: var(--dark-surface); border: 1px solid var(--dark-border); border-radius: 6px; padding: 10px 14px; font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--text-muted); }
+    .key-value code { flex: 1; word-break: break-all; }
+    .key-value button { background: rgba(255,255,255,0.06); border: 1px solid var(--dark-border); color: var(--text-muted); padding: 4px 10px; border-radius: 4px; font-size: 12px; cursor: pointer; font-family: inherit; white-space: nowrap; }
+    .key-value button:hover { background: rgba(255,255,255,0.1); color: var(--text); }
+    .key-scopes { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+    .key-scope { font-size: 12px; color: var(--green); background: rgba(30,185,105,0.08); padding: 2px 8px; border-radius: 4px; font-family: 'JetBrains Mono', monospace; }
+    .key-actions { display: flex; gap: 8px; margin-top: 12px; }
+    .empty-state { text-align: center; padding: 40px 20px; color: var(--text-muted); font-size: 14px; }
+
+    /* Create key modal */
+    .modal-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.6); z-index: 200; align-items: center; justify-content: center; }
+    .modal-overlay.visible { display: flex; }
+    .modal { background: var(--dark-card); border: 1px solid var(--dark-border); border-radius: var(--radius); padding: 32px; max-width: 480px; width: 90%; }
+    .modal h3 { font-size: 18px; font-weight: 700; margin-bottom: 4px; }
+    .modal p { color: var(--text-muted); font-size: 14px; margin-bottom: 20px; }
+    .modal .form-group:last-of-type { margin-bottom: 20px; }
+    .scopes-checkboxes { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .scope-check { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-muted); cursor: pointer; }
+    .scope-check input { accent-color: var(--green); }
+    .modal-actions { display: flex; gap: 12px; justify-content: flex-end; }
+
+    /* Revealed key */
+    .revealed-key { background: rgba(30,185,105,0.06); border: 1px solid rgba(30,185,105,0.25); border-radius: var(--radius-sm); padding: 20px; margin-bottom: 24px; }
+    .revealed-key h4 { color: var(--green); font-size: 14px; margin-bottom: 8px; }
+    .revealed-key p { font-size: 13px; color: var(--text-muted); margin-bottom: 12px; }
+    .revealed-key code { display: block; background: var(--dark-surface); border: 1px solid var(--dark-border); border-radius: 6px; padding: 12px 14px; font-family: 'JetBrains Mono', monospace; font-size: 14px; color: var(--text); word-break: break-all; }
+
+    .divider { border: 0; border-top: 1px solid var(--dark-border); margin: 32px 0; }
+
+    @media (max-width: 600px) {
+      .scopes-checkboxes { grid-template-columns: 1fr; }
+      .dash-header { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="/" class="nav-brand">
+      <img src="/logo.png" alt="Trade Buddy">
+      <span>Trade Buddy</span>
+      <span class="dev-badge">Dashboard</span>
+    </a>
+    <a href="/" class="nav-link">&larr; Back to Docs</a>
+  </div>
+</nav>
+
+<!-- AUTH -->
+<div id="auth-section">
+  <div class="auth-card">
+    <h2>Developer Dashboard</h2>
+    <p>Sign in with your Trade Buddy account to manage API keys and webhooks.</p>
+    <div class="form-group">
+      <label>Email</label>
+      <input type="email" class="form-input" id="auth-email" placeholder="you@school.edu">
+    </div>
+    <div class="form-group">
+      <label>Password</label>
+      <input type="password" class="form-input" id="auth-password" placeholder="Your password">
+    </div>
+    <button class="btn btn-primary" id="auth-btn">Sign In</button>
+    <div class="auth-error" id="auth-error"></div>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div id="dashboard-section">
+  <div class="container">
+    <div class="dash-header">
+      <div class="user-info">
+        <div class="user-avatar" id="user-avatar"></div>
+        <div>
+          <div class="user-name" id="user-name"></div>
+          <div class="user-email" id="user-email"></div>
+        </div>
+      </div>
+      <button class="btn btn-sm btn-secondary" id="signout-btn">Sign Out</button>
+    </div>
+
+    <hr class="divider">
+
+    <!-- API KEYS -->
+    <div class="section-title">
+      <span>API Keys</span>
+      <button class="btn btn-sm btn-primary" id="create-key-btn" style="width:auto;">+ Create Key</button>
+    </div>
+
+    <div id="new-key-reveal" style="display:none;" class="revealed-key">
+      <h4>Your new API key</h4>
+      <p>Copy this key now — you won't be able to see it again.</p>
+      <code id="new-key-value"></code>
+    </div>
+
+    <div id="keys-list">
+      <div class="empty-state">Loading API keys...</div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- WEBHOOKS -->
+    <div class="section-title">
+      <span>Webhooks</span>
+      <button class="btn btn-sm btn-primary" id="create-webhook-btn" style="width:auto;">+ Add Webhook</button>
+    </div>
+
+    <div id="webhooks-list">
+      <div class="empty-state">Loading webhooks...</div>
+    </div>
+  </div>
+</div>
+
+<!-- CREATE KEY MODAL -->
+<div class="modal-overlay" id="key-modal">
+  <div class="modal">
+    <h3>Create API Key</h3>
+    <p>Choose a name, type, and scopes for your new key.</p>
+    <div class="form-group">
+      <label>Key Name</label>
+      <input type="text" class="form-input" id="key-name" placeholder="e.g. My Integration">
+    </div>
+    <div class="form-group">
+      <label>Key Type</label>
+      <select class="form-input" id="key-type">
+        <option value="secret">Secret (full access)</option>
+        <option value="public">Public (read-only)</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Scopes</label>
+      <div class="scopes-checkboxes">
+        <label class="scope-check"><input type="checkbox" value="listings:read" checked> listings:read</label>
+        <label class="scope-check"><input type="checkbox" value="listings:write"> listings:write</label>
+        <label class="scope-check"><input type="checkbox" value="users:read"> users:read</label>
+        <label class="scope-check"><input type="checkbox" value="users:write"> users:write</label>
+        <label class="scope-check"><input type="checkbox" value="webhooks:manage"> webhooks:manage</label>
+        <label class="scope-check"><input type="checkbox" value="analytics:read"> analytics:read</label>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-sm btn-secondary" id="key-modal-cancel">Cancel</button>
+      <button class="btn btn-sm btn-primary" id="key-modal-create" style="width:auto;">Create Key</button>
+    </div>
+  </div>
+</div>
+
+<!-- CREATE WEBHOOK MODAL -->
+<div class="modal-overlay" id="webhook-modal">
+  <div class="modal">
+    <h3>Add Webhook</h3>
+    <p>Enter the URL and select which events to subscribe to.</p>
+    <div class="form-group">
+      <label>Endpoint URL</label>
+      <input type="url" class="form-input" id="wh-url" placeholder="https://yourapp.com/webhooks">
+    </div>
+    <div class="form-group">
+      <label>Secret (optional)</label>
+      <input type="text" class="form-input" id="wh-secret" placeholder="whsec_your_secret">
+    </div>
+    <div class="form-group">
+      <label>Events</label>
+      <div class="scopes-checkboxes">
+        <label class="scope-check"><input type="checkbox" value="listing.created" checked> listing.created</label>
+        <label class="scope-check"><input type="checkbox" value="listing.sold"> listing.sold</label>
+        <label class="scope-check"><input type="checkbox" value="listing.deleted"> listing.deleted</label>
+        <label class="scope-check"><input type="checkbox" value="user.created"> user.created</label>
+        <label class="scope-check"><input type="checkbox" value="user.deleted"> user.deleted</label>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-sm btn-secondary" id="wh-modal-cancel">Cancel</button>
+      <button class="btn btn-sm btn-primary" id="wh-modal-create" style="width:auto;">Add Webhook</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  var API = 'https://mytradebuddy.com/api';
+  var token = null;
+  var user = null;
+
+  // Elements
+  var authSection = document.getElementById('auth-section');
+  var dashSection = document.getElementById('dashboard-section');
+  var authBtn = document.getElementById('auth-btn');
+  var authError = document.getElementById('auth-error');
+  var signoutBtn = document.getElementById('signout-btn');
+
+  // Auth
+  authBtn.addEventListener('click', async function () {
+    var email = document.getElementById('auth-email').value;
+    var password = document.getElementById('auth-password').value;
+    if (!email || !password) { showError('Please enter email and password.'); return; }
+
+    authBtn.disabled = true;
+    authBtn.textContent = 'Signing in...';
+    authError.style.display = 'none';
+
+    try {
+      var res = await fetch(API + '/auth.php?action=login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: email, password: password }),
+      });
+      var data = await res.json();
+      if (!data.success) { showError(data.message || 'Sign in failed.'); return; }
+      token = data.token;
+      user = data.user;
+      sessionStorage.setItem('tb_token', token);
+      sessionStorage.setItem('tb_user', JSON.stringify(user));
+      showDashboard();
+    } catch (e) {
+      showError('Network error: ' + e.message);
+    } finally {
+      authBtn.disabled = false;
+      authBtn.textContent = 'Sign In';
+    }
+  });
+
+  function showError(msg) {
+    authError.textContent = msg;
+    authError.style.display = 'block';
+  }
+
+  // Check session
+  var savedToken = sessionStorage.getItem('tb_token');
+  var savedUser = sessionStorage.getItem('tb_user');
+  if (savedToken && savedUser) {
+    token = savedToken;
+    user = JSON.parse(savedUser);
+    showDashboard();
+  }
+
+  function showDashboard() {
+    authSection.style.display = 'none';
+    dashSection.style.display = 'block';
+    document.getElementById('user-name').textContent = user.name;
+    document.getElementById('user-email').textContent = user.email;
+    document.getElementById('user-avatar').textContent = user.name.charAt(0).toUpperCase();
+    loadKeys();
+    loadWebhooks();
+  }
+
+  // Sign out
+  signoutBtn.addEventListener('click', function () {
+    token = null;
+    user = null;
+    sessionStorage.removeItem('tb_token');
+    sessionStorage.removeItem('tb_user');
+    authSection.style.display = '';
+    dashSection.style.display = 'none';
+  });
+
+  // ---------------------------------------------------------------------------
+  // API Keys
+  // ---------------------------------------------------------------------------
+  async function loadKeys() {
+    var list = document.getElementById('keys-list');
+    try {
+      var res = await fetch(API + '/keys.php?action=list', {
+        headers: { 'Authorization': 'Bearer ' + token },
+      });
+      var data = await res.json();
+      if (!data.success || !data.apiKeys || data.apiKeys.length === 0) {
+        list.innerHTML = '<div class="empty-state">No API keys yet. Create one to get started.</div>';
+        return;
+      }
+      list.innerHTML = '';
+      data.apiKeys.forEach(function (key) { list.appendChild(renderKey(key)); });
+    } catch (e) {
+      list.innerHTML = '<div class="empty-state">No API keys yet. Create one to get started.</div>';
+    }
+  }
+
+  function renderKey(key) {
+    var card = document.createElement('div');
+    card.className = 'key-card';
+    card.innerHTML = '<div class="key-header"><span class="key-name">' + esc(key.name) + '</span><div class="key-meta"><span class="key-badge ' + key.type + '">' + key.type + '</span></div></div>' +
+      '<div class="key-value"><code>' + esc(key.key) + '</code><button onclick="copyText(this, \'' + esc(key.key) + '\')">Copy</button></div>' +
+      (key.scopes ? '<div class="key-scopes">' + key.scopes.map(function (s) { return '<span class="key-scope">' + esc(s) + '</span>'; }).join('') + '</div>' : '') +
+      '<div class="key-actions"><button class="btn btn-sm btn-danger" onclick="revokeKey(\'' + esc(key.id) + '\', this)">Revoke</button></div>';
+    return card;
+  }
+
+  window.copyText = function (btn, text) {
+    navigator.clipboard.writeText(text);
+    btn.textContent = 'Copied!';
+    setTimeout(function () { btn.textContent = 'Copy'; }, 2000);
+  };
+
+  window.revokeKey = async function (id, btn) {
+    if (!confirm('Revoke this API key? This cannot be undone.')) return;
+    btn.disabled = true;
+    try {
+      await fetch(API + '/keys.php?action=revoke', {
+        method: 'POST',
+        headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: id }),
+      });
+    } catch (e) {}
+    loadKeys();
+  };
+
+  // Create key modal
+  var keyModal = document.getElementById('key-modal');
+  document.getElementById('create-key-btn').addEventListener('click', function () { keyModal.classList.add('visible'); });
+  document.getElementById('key-modal-cancel').addEventListener('click', function () { keyModal.classList.remove('visible'); });
+
+  document.getElementById('key-modal-create').addEventListener('click', async function () {
+    var name = document.getElementById('key-name').value;
+    var type = document.getElementById('key-type').value;
+    var scopes = [];
+    document.querySelectorAll('#key-modal .scope-check input:checked').forEach(function (cb) { scopes.push(cb.value); });
+
+    if (!name) { alert('Please enter a key name.'); return; }
+    if (scopes.length === 0) { alert('Select at least one scope.'); return; }
+
+    try {
+      var res = await fetch(API + '/keys.php?action=create', {
+        method: 'POST',
+        headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: name, type: type, scopes: scopes }),
+      });
+      var data = await res.json();
+      keyModal.classList.remove('visible');
+      if (data.success && data.apiKey) {
+        var reveal = document.getElementById('new-key-reveal');
+        document.getElementById('new-key-value').textContent = data.apiKey.key;
+        reveal.style.display = 'block';
+      }
+      loadKeys();
+    } catch (e) {
+      alert('Failed to create key: ' + e.message);
+    }
+  });
+
+  // ---------------------------------------------------------------------------
+  // Webhooks
+  // ---------------------------------------------------------------------------
+  async function loadWebhooks() {
+    var list = document.getElementById('webhooks-list');
+    try {
+      var res = await fetch(API + '/webhooks.php?action=list', {
+        headers: { 'Authorization': 'Bearer ' + token },
+      });
+      var data = await res.json();
+      if (!data.success || !data.webhooks || data.webhooks.length === 0) {
+        list.innerHTML = '<div class="empty-state">No webhooks configured. Add one to get started.</div>';
+        return;
+      }
+      list.innerHTML = '';
+      data.webhooks.forEach(function (wh) { list.appendChild(renderWebhook(wh)); });
+    } catch (e) {
+      list.innerHTML = '<div class="empty-state">No webhooks configured. Add one to get started.</div>';
+    }
+  }
+
+  function renderWebhook(wh) {
+    var card = document.createElement('div');
+    card.className = 'key-card';
+    card.innerHTML = '<div class="key-header"><span class="key-name" style="font-family:\'JetBrains Mono\',monospace;font-size:13px;">' + esc(wh.url) + '</span></div>' +
+      '<div class="key-scopes">' + (wh.events || []).map(function (e) { return '<span class="key-scope">' + esc(e) + '</span>'; }).join('') + '</div>' +
+      '<div class="key-actions"><button class="btn btn-sm btn-danger" onclick="deleteWebhook(\'' + esc(wh.id) + '\', this)">Delete</button></div>';
+    return card;
+  }
+
+  window.deleteWebhook = async function (id, btn) {
+    if (!confirm('Delete this webhook?')) return;
+    btn.disabled = true;
+    try {
+      await fetch(API + '/webhooks.php?action=delete', {
+        method: 'POST',
+        headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: id }),
+      });
+    } catch (e) {}
+    loadWebhooks();
+  };
+
+  // Create webhook modal
+  var whModal = document.getElementById('webhook-modal');
+  document.getElementById('create-webhook-btn').addEventListener('click', function () { whModal.classList.add('visible'); });
+  document.getElementById('wh-modal-cancel').addEventListener('click', function () { whModal.classList.remove('visible'); });
+
+  document.getElementById('wh-modal-create').addEventListener('click', async function () {
+    var url = document.getElementById('wh-url').value;
+    var secret = document.getElementById('wh-secret').value;
+    var events = [];
+    document.querySelectorAll('#webhook-modal .scope-check input:checked').forEach(function (cb) { events.push(cb.value); });
+
+    if (!url) { alert('Please enter a webhook URL.'); return; }
+    if (events.length === 0) { alert('Select at least one event.'); return; }
+
+    try {
+      var res = await fetch(API + '/webhooks.php?action=create', {
+        method: 'POST',
+        headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ url: url, events: events, secret: secret || undefined }),
+      });
+      whModal.classList.remove('visible');
+      loadWebhooks();
+    } catch (e) {
+      alert('Failed to create webhook: ' + e.message);
+    }
+  });
+
+  function esc(s) { var d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+</script>
+</body>
+</html>
