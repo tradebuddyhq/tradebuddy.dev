@@ -26,6 +26,7 @@
       <a href="#webhooks">Webhooks</a>
       <a href="#apikeys">API Keys</a>
       <a href="#widget">Widget</a>
+      <a href="#cli">CLI</a>
       <a href="#stack">Stack</a>
       <a href="#roadmap">Roadmap</a>
       <a href="https://quill.tradebuddy.dev" target="_blank">Quill</a>
@@ -831,6 +832,55 @@ keys.forEach(k => {
 
 <hr class="divider">
 
+<!-- CLI TOOL -->
+<section id="cli">
+  <div class="section-label">Command Line</div>
+  <div class="section-title">Trade Buddy CLI</div>
+  <div class="section-desc">Browse listings, post items, and manage your account — all from the terminal.</div>
+
+  <div class="install-bar" style="margin-bottom: 2rem;">
+    <code>npx tradebuddy</code>
+    <button class="copy-btn" onclick="navigator.clipboard.writeText('npx tradebuddy')">Copy</button>
+  </div>
+
+  <div style="max-width: 720px; margin: 0 auto;">
+    <div style="background: #0d1117; border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 2rem; font-family: 'SF Mono', 'Fira Code', monospace; font-size: 0.85rem; line-height: 1.8; color: #c9d1d9; overflow-x: auto;">
+      <div style="color: #7ee787;">$ tradebuddy</div>
+      <br>
+      <div style="color: #58a6ff; font-weight: 600;">  Trade Buddy CLI <span style="color: #484f58;">v1.0.0</span></div>
+      <div style="color: #484f58;">  Browse listings, post items, and manage your account.</div>
+      <br>
+      <div style="color: #c9d1d9;">  <span style="color: #7ee787; font-weight: 600;">Quick start:</span></div>
+      <div>    <span style="color: #7ee787;">$</span> tradebuddy login          <span style="color: #484f58;">Sign in to your account</span></div>
+      <div>    <span style="color: #7ee787;">$</span> tradebuddy browse          <span style="color: #484f58;">Browse all listings</span></div>
+      <div>    <span style="color: #7ee787;">$</span> tradebuddy browse -c Books <span style="color: #484f58;">Browse books only</span></div>
+      <div>    <span style="color: #7ee787;">$</span> tradebuddy post            <span style="color: #484f58;">Post an item</span></div>
+    </div>
+  </div>
+
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.2rem; max-width: 720px; margin: 2rem auto 0;">
+    <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); border-radius: 10px; padding: 1.2rem;">
+      <div style="color: #7ee787; font-weight: 600; margin-bottom: 0.4rem;">login / signup</div>
+      <div style="color: #8b949e; font-size: 0.85rem;">Authenticate with your Trade Buddy account</div>
+    </div>
+    <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); border-radius: 10px; padding: 1.2rem;">
+      <div style="color: #58a6ff; font-weight: 600; margin-bottom: 0.4rem;">browse</div>
+      <div style="color: #8b949e; font-size: 0.85rem;">Search and filter listings by category or keyword</div>
+    </div>
+    <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); border-radius: 10px; padding: 1.2rem;">
+      <div style="color: #d2a8ff; font-weight: 600; margin-bottom: 0.4rem;">post</div>
+      <div style="color: #8b949e; font-size: 0.85rem;">List products, donations, or wanted items interactively</div>
+    </div>
+  </div>
+
+  <div style="text-align: center; margin-top: 2rem;">
+    <a href="https://github.com/tradebuddyhq/cli" target="_blank" class="btn-secondary" style="margin-right: 0.5rem;">View on GitHub &rarr;</a>
+    <a href="https://www.npmjs.com/package/tradebuddy" target="_blank" class="btn-secondary">npm package &rarr;</a>
+  </div>
+</section>
+
+<hr class="divider">
+
 <!-- ROADMAP -->
 <section id="roadmap">
   <div class="section-label">Roadmap</div>
@@ -863,7 +913,7 @@ keys.forEach(k => {
       <p>Drop a &lt;script&gt; tag on any school website to display Trade Buddy listings. Customizable themes and filters.</p>
     </div>
     <div class="roadmap-card">
-      <div class="roadmap-status planned">Planned</div>
+      <div class="roadmap-status live">Live</div>
       <div class="roadmap-icon green"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 17l6-6-6-6M12 19h8"/></svg></div>
       <h3>CLI Tool</h3>
       <p>Interact with Trade Buddy from your terminal. Browse listings, post items, manage your account with <code>npx tradebuddy</code>.</p>
