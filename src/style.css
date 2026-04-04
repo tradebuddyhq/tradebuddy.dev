@@ -665,6 +665,27 @@ section { max-width: 1200px; margin: 0 auto; padding: 100px 24px; }
 }
 .wp-footer a:hover { text-decoration: underline; }
 
+/* ─── DISCORD ─── */
+.discord-section { text-align: center; padding: 80px 24px 0; }
+.discord-box {
+  max-width: 640px; margin: 0 auto; background: rgba(88, 101, 242, 0.06);
+  border: 1px solid rgba(88, 101, 242, 0.2); border-radius: var(--radius); padding: 48px 40px;
+}
+.discord-icon {
+  width: 64px; height: 64px; margin: 0 auto 20px;
+  background: rgba(88, 101, 242, 0.12); border-radius: 16px;
+  display: flex; align-items: center; justify-content: center;
+}
+.discord-box h2 { font-size: 28px; font-weight: 700; margin-bottom: 10px; letter-spacing: -0.5px; }
+.discord-box p { font-size: 15px; color: var(--text-muted); margin-bottom: 28px; line-height: 1.6; }
+.btn-discord {
+  display: inline-flex; align-items: center; gap: 10px;
+  background: #5865F2; color: #fff; padding: 12px 28px;
+  border-radius: var(--radius-sm); font-size: 15px; font-weight: 600;
+  text-decoration: none; transition: all 0.2s;
+}
+.btn-discord:hover { background: #4752c4; transform: translateY(-1px); }
+
 /* ─── CTA ─── */
 .cta-section { text-align: center; padding: 100px 24px; }
 .cta-box {
@@ -699,5 +720,6 @@ footer { border-top: 1px solid var(--dark-border); padding: 32px 24px; }
   .nav-links { display: none; }
   .hero { padding: 130px 24px 80px; }
   .cta-box { padding: 40px 24px; }
+  .discord-box { padding: 36px 24px; }
   .footer-inner { flex-direction: column; text-align: center; }
 }
