@@ -22,6 +22,7 @@
     <div class="nav-links">
       <a href="#quickstart">Quick Start</a>
       <a href="#api">API</a>
+      <a href="#api-tests">Tests</a>
       <a href="#sdk">SDK</a>
       <a href="#webhooks">Webhooks</a>
       <a href="#apikeys">API Keys</a>
@@ -391,6 +392,46 @@ console.<span class="cf">log</span>(listing.id); <span class="cc">// "sell_42"</
         </div></div>
       </div>
     </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- API TESTS -->
+<section id="api-tests">
+  <div class="section-label">API Testing</div>
+  <div class="section-title">Our API is tested with Quill</div>
+  <div class="section-desc">38 automated tests validate authentication, listings, data integrity, and response shape — written in plain English using <a href="https://quill.tradebuddy.dev" target="_blank" style="color:#1EB969;">Quill</a>.</div>
+
+  <div class="code-block" style="max-width:800px;">
+    <div class="code-header"><span>tradebuddy-tests.quill</span><button class="copy-btn">Copy</button></div>
+    <div class="code-body"><div class="code-panel active"><pre><span class="cc">-- Authentication Tests</span>
+
+<span class="ck">test</span> <span class="cs">"login with invalid credentials returns failure"</span>:
+  response <span class="ck">is</span> <span class="ck">await</span> postJSON(<span class="cs">"{api_url}/auth.php?action=login"</span>, {
+    email: <span class="cs">"fake@nonexistent.com"</span>,
+    password: <span class="cs">"wrongpassword123"</span>
+  })
+  <span class="ck">expect</span> response.success <span class="ck">is</span> no
+
+<span class="cc">-- Listings Tests</span>
+
+<span class="ck">test</span> <span class="cs">"each listing has a valid type"</span>:
+  data <span class="ck">is</span> <span class="ck">await</span> fetchJSON(<span class="cs">"{api_url}/listings.php"</span>)
+  <span class="ck">for each</span> item <span class="ck">in</span> data.listings:
+    <span class="ck">expect</span> isValidType(item.type) <span class="ck">is</span> yes
+
+<span class="cc">-- Data Integrity</span>
+
+<span class="ck">test</span> <span class="cs">"no duplicate listing IDs"</span>:
+  data <span class="ck">is</span> <span class="ck">await</span> fetchJSON(<span class="cs">"{api_url}/listings.php"</span>)
+  ids <span class="ck">is</span> map_list(data.listings, <span class="ck">with</span> i: i.id)
+  <span class="ck">expect</span> length(unique(ids)) <span class="ck">is</span> length(ids)</pre></div></div>
+  </div>
+
+  <div style="display:flex; gap:12px; margin-top:20px;">
+    <a href="https://quill.tradebuddy.dev/docs/showcase" target="_blank" class="btn btn-primary" style="font-size:0.95rem;">View Full Test Suite (38 tests)</a>
+    <a href="https://github.com/tradebuddyhq/quill/blob/main/examples/tradebuddy-tests.quill" target="_blank" class="btn btn-secondary" style="font-size:0.95rem;">View on GitHub</a>
   </div>
 </section>
 
